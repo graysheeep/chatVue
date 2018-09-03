@@ -68,10 +68,6 @@
           <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
         </div>
 
-        <div class="advice" v-show="hasDisliked">
-          <advice-box />
-        </div>
-
         <!--<div class="question-box">-->
           <!--<p class="question-content">-->
             <!--本市推进智能网联汽车道路测试宝马中国获颁路测试牌-->
@@ -92,6 +88,10 @@
 
       <div class="send" @click="sendQuestion"></div>
       <span class="count">{{ count }}</span>
+    </div>
+
+    <div class="advice" v-show="hasDisliked">
+      <advice-box />
     </div>
   </div>
 </template>

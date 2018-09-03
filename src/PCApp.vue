@@ -39,7 +39,7 @@ html, body {
 
 body {
   background-color: #898E99;
-  padding-top: 40px;/*no*/
+  padding-top: 30px;/*no*/
   box-sizing: border-box;
 }
 
@@ -75,7 +75,7 @@ body {
 @media screen and (min-width: 1601px) {
   #app {
     width: 1201px;/*no*/
-    height: 889px;/*no*/
+    height: 789px;/*no*/
   }
 }
 </style>
