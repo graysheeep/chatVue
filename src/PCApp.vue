@@ -1,7 +1,13 @@
 <template>
-  <div id="app" :class="{
-    'show-hot': showHot
-  }">
+  <div
+    id="app"
+    :class="{
+      'show-hot': showHot
+    }"
+    :style="{
+      width: winWidth * 0.7 + 'px',
+      height: winHeight * 0.9 + 'px'
+    }">
     <router-view/>
 
     <hot-topic v-show="showHot"/>
@@ -19,7 +25,9 @@ export default {
 
   data () {
     return {
-      showHot: true
+      showHot: true,
+      winWidth: window.innerWidth,
+      winHeight: window.innerHeight
     }
   },
 
@@ -58,24 +66,24 @@ body {
   padding-right: 256px;/*no*/
 }
 
-@media screen and (min-width: 1400px) and (max-width: 1599px) {
+/*@media screen and (min-width: 1400px) and (max-width: 1599px) {
   #app {
-    width: 924px;/*no*/
-    height: 684px;/*no*/
+    width: 924px;
+    height: 684px;
   }
 }
 
 @media screen and (min-width: 1400px) and (max-width: 1600px) {
   #app {
-    width: 924px;/*no*/
-    height: 684px;/*no*/
+    width: 924px;
+    height: 684px;
   }
 }
 
 @media screen and (min-width: 1601px) {
   #app {
-    width: 1201px;/*no*/
-    height: 789px;/*no*/
+    width: 1201px;
+    height: 789px;
   }
-}
+}*/
 </style>
