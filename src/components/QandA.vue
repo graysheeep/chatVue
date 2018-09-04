@@ -22,54 +22,34 @@
     <div class="chat-content" ref="chatContent">
 
       <div class="q-a" v-for="(item, index) in questionList" :key="index">
-        <div class="time">
-          <span>4:30PM</span>
-        </div>
+        <!--<div class="time">-->
+          <!--<span>4:30PM</span>-->
+        <!--</div>-->
+        <div v-if="item.question!=null">
         <div class="question-box">
           <p class="question-content">
             {{item.question}}
           </p>
         </div>
+        </div>
 
-        <div class="answer">
-          <div class="avatar"></div>
-          <div class="answer-content">
-            <div class="triangle"></div>
-            {{ item.answer }}
-            <!--<h1>您的问题是：<span>{{ item }}</span></h1>-->
-            <!--<h2>我们为您找到以下答案</h2>-->
-
-            <!--<ul>-->
-              <!--<li>-->
-                <!--普通话水平测试-->
-                <!--<span class="tag tag1">办事服务</span>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--水平衡测试报告方案-->
-                <!--<span class="tag tag1">办事服务</span>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--本市推进智能网联汽车道路-->
-                <!--<span class="tag tag2">公众服务</span>-->
-              <!--</li>-->
-              <!--<li>本市推进智能网联汽车路测试成长性…</li>-->
-            <!--</ul>-->
-
-            <!--<div class="more">更多信息 >></div>-->
+        <div v-if="item.answer!=null">
+          <div class="answer">
+            <div class="avatar"></div>
+            <div class="answer-content">
+              <div class="triangle"></div>
+              {{ item.answer }}
+            </div>
+          </div>
+          <div class="feedback">
+            你对以上问答是否满意？
+            <img :src="hasLiked ? likedIcon : likeIcon" class="like" @click="onLike">
+            <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
           </div>
         </div>
-
-        <div class="feedback">
-          你对以上问答是否满意？
-          <img :src="hasLiked ? likedIcon : likeIcon" class="like" @click="onLike">
-          <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
-        </div>
-
         <div class="advice" v-show="hasDisliked">
           <advice-mobile />
         </div>
-      </div>
-
     </div>
 
     <div class="input-box" @click="onClickInput" ref="inputBox">
@@ -85,11 +65,12 @@
       <span class="count">{{ count }}</span>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 import AdviceMobile from './AdviceMobile'
-
+import global_ from '../common/Global'
 export default {
   data () {
     return {
@@ -97,10 +78,6 @@ export default {
       input: '',
       selectedTab: 0,
       questionList: [
-        {
-          question: '我要卖酒',
-          answer: '您是需要办理酒类商品零售许可证吗？'
-        }
       ],
       hasLiked: false,
       hasDisliked: false,
@@ -145,8 +122,11 @@ export default {
       if (this.input.length === 0) {
         return false
       }
-      this.word = this.input
-      this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do', {'word': this.input}, {emulateJSON: true})
+      this.questionList.push({question: this.input})
+      this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do', {
+        'word': this.input,
+        'sessionId': global_.sessionId
+      }, {emulateJSON: true})
         .then((res) => {
           //  把返回值给到
           var result = res.data.data
@@ -156,23 +136,30 @@ export default {
           while ((url = reg.exec(result)) != null) {
             result = result
               .replace(url,
-                "< a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></ a>")
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></ a>")
           }
           // 这里的reg就是上面的正则表达式
-          result = result.replace(/\r\n/g, '<br/>')
-          console.log(result.replace(/\r\n/g, '<br/>'))
-          result = result.replace(/\n/g, '<br/>')
+          result = result.replace(/\\r\\n/g, '<br/>')
+          console.log(result.replace(/\\r\\n/g, '<br/>'))
+          result = result.replace(/\\n/g, '<br/>')
           let data = {
-            question: this.input,
             answer: result
           }
           this.questionList.push(data)
+          this.word = ''
           this.input = ''
           // this.responseResoult = ''
           setTimeout(() => {
             this.$refs.chatContent.scrollTop = 99999
           }, 50)
         })
+      // axios.post('https://can.xmduruo.com:4000/wechatroutine//byWord.do', word)
+      //   .then(function (resonse) {
+      //     this.responseResoult = resonse.data
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   })
     }
 
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      热门回答
+      热门问答
       <img src="../assets/fire.png" alt="">
     </div>
 
@@ -38,11 +38,11 @@ export default {
         question: '临时占用城市道路许可审批结果是什么',
         answer: '《上海市路政管理行政许可证》哦~ '
       }, {
-        question: '营业性演出视听资料内容包括哪些？',
-        answer: '歌曲类节目应当提交歌词文本及...'
+        question: '技术合同分为几类',
+        answer: '分为四类：1.技术开发合同，2技...'
       }, {
-        question: '办理三证合一需要什么手续？',
-        answer: '所谓“三证合一”，就是将企业依次按…'
+        question: '上海市劳务派遣行政许可申请平台的网址是什么？',
+        answer: '上海市劳务派遣行政许可申请平...'
       }],
       selectedQuestion: -1
     }

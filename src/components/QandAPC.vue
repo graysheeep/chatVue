@@ -7,7 +7,7 @@
           'selected': selectedTab === 0
         }"
         @click="selectedTab = 0">
-        智能回答
+        徐汇区行政服务中心人工智能系统
       </span>
       <!--这里暂时不用-->
       <!--<span-->
@@ -25,13 +25,15 @@
     <div class="chat-content" ref="chatContent">
 
       <div class="q-a" v-for="(item, index) in questionList" :key="index">
-
+        <div v-if="item.question!=null">
         <div class="question-box">
           <p class="question-content">
             {{item.question}}
           </p>
         </div>
-        <div class="answer">
+        </div>
+        <div v-if="item.answer!=null">
+        <div class="answer" >
           <div class="avatar"></div>
           <div class="answer-content">
             <div class="triangle" ></div>
@@ -61,13 +63,14 @@
             <!--<div class="more">更多信息 >></div>-->
           </div>
         </div>
-
-        <div class="feedback">
-          你对以上问答是否满意？
-          <img :src="hasLiked ? likedIcon : likeIcon" class="like" @click="onLike">
-          <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
+          <div v-if="temp">
+          <div class="feedback">
+            你对以上问答是否满意？
+            <img :src="hasLiked ? likedIcon : likeIcon" class="like" @click="onLike">
+            <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
+          </div>
+          </div>
         </div>
-
         <!--<div class="question-box">-->
           <!--<p class="question-content">-->
             <!--本市推进智能网联汽车道路测试宝马中国获颁路测试牌-->
@@ -80,7 +83,7 @@
     <div class="input-box">
       <input
         type="text"
-        placeholder="简单输入，我来为你解答…"
+        placeholder="请输入问题内容，我来为你解答…"
         :value="input"
         @input="onChangeInput"
         ref="input"
@@ -100,19 +103,18 @@
 <script>
 import eventBus from '../common/eventBus.js'
 import AdviceBox from './AdviceBox'
+import global_ from '../common/Global'
 export default {
+
   data () {
     return {
       count: 89,
       input: '',
       selectedTab: 0,
+      temp:true,
       // data: {
       // },
       questionList: [
-        {
-          question: '这里是问题',
-          answer: '这里是答案'
-        },
       ],
       word:'',
       responseResoult: '',
@@ -140,7 +142,11 @@ export default {
       eventBus.$on('hotTopic',function (val) {
         that.word = val
         console.log(val)
-        that.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{'word':val},{emulateJSON:true})
+        that.questionList.push({question:that.word})
+        that.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{
+          'word':val,
+          'sessionId':global_.sessionId
+        },{emulateJSON:true})
           .then((res) => {
             //  把返回值给到
             var result=res.data.data
@@ -157,7 +163,6 @@ export default {
             result = result.replace(/\\n/g, "<br/>");
 //          this.responseResoult = result
             let data = {
-              question: val,
               answer: result
             }
             that.questionList.push(data)
@@ -181,6 +186,7 @@ export default {
     },
 
     onLike() {
+      this.temp=false
       this.hasLiked = !this.hasLiked
       if (this.hasLiked) {
         this.hasDisliked = false
@@ -188,12 +194,16 @@ export default {
     },
 
     onDislike() {
+      this.temp=false
       this.hasDisliked = !this.hasDisliked
       if (this.hasDisliked) {
         this.hasLiked = false
       }
     },
-
+    // setShi(value) {
+    //   $("#newquestion").val(value);
+    //   sendQuestion();
+    // }
     onExpand() {
       this.showHot = !this.showHot
       window.eventBus.$emit('on-showhot', this.showHot)
@@ -202,8 +212,11 @@ export default {
       if(this.input.length==0){
         return false;
       }
-      this.word=this.input
-      this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{'word':this.input},{emulateJSON:true})
+      this.questionList.push({question:this.input})
+      this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{
+        'word':this.input,
+        'sessionId':global_.sessionId
+      },{emulateJSON:true})
         .then((res) => {
           //  把返回值给到
           var result=res.data.data
@@ -219,7 +232,6 @@ export default {
           console.log(result.replace(/\\r\\n/g, '<br/>'))
           result = result.replace(/\\n/g, '<br/>');
             let data = {
-              question: this.input,
               answer: result
             }
             this.questionList.push(data)
