@@ -115,6 +115,7 @@ export default {
       // data: {
       // },
       questionList: [
+        // {answer:'<a @click="setShi(\'a\')">A:选a</a>'}
       ],
       word:'',
       responseResoult: '',
@@ -135,8 +136,15 @@ export default {
   // },
   mounted() {
     this.getEventDatas()
+    window.setShi = (word)=>{
+      console.log('查看是否替换'+word)
+      eventBus.$emit('hotTopic',word)
+    }
   },
   methods: {
+    setShi(word){
+      console.log("word"+word)
+    },
     getEventDatas() {
       const that = this
       eventBus.$on('hotTopic',function (val) {
@@ -167,7 +175,6 @@ export default {
             }
             that.questionList.push(data)
             that.word=''
-            that.input = ''
             // this.responseResoult = ''
             setTimeout(() => {
               that.$refs.chatContent.scrollTop = 99999
@@ -180,11 +187,6 @@ export default {
       this.$refs.input.value = e.target.value.slice(0, 89)
       this.count = 89 - this.input.length
     },
-
-    sendQuestion() {
-      this.getList()
-    },
-
     onLike() {
       this.temp=false
       this.hasLiked = !this.hasLiked
@@ -213,14 +215,15 @@ export default {
         return false;
       }
       this.questionList.push({question:this.input})
+      this.word=this.input
+      this.input = ''
       this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{
-        'word':this.input,
+        'word':this.word,
         'sessionId':global_.sessionId
       },{emulateJSON:true})
         .then((res) => {
           //  把返回值给到
           var result=res.data.data
-          console.log(res.data.data)
           var reg = /[a-zA-z]+:\/\/[^\s]*/g;
           var url;
           while ((url = reg.exec(result)) != null) {
@@ -229,15 +232,13 @@ export default {
                 "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
           }//这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>');
-          console.log(result.replace(/\\r\\n/g, '<br/>'))
           result = result.replace(/\\n/g, '<br/>');
+          result = result.replace("void0",'')
             let data = {
               answer: result
             }
             this.questionList.push(data)
             this.word=''
-            this.input = ''
-            // this.responseResoult = ''
             setTimeout(() => {
               this.$refs.chatContent.scrollTop = 99999
             }, 50)
