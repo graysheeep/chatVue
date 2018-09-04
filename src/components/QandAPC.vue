@@ -113,14 +113,6 @@ export default {
           question: '这里是问题',
           answer: '这里是答案'
         },
-        // {
-        //   question:'我要开火锅店',
-        //   answer:'您是否要结束正在办理的事项，办理餐饮流程业务吗？'
-        // },
-        // {
-        //   question:'是的',
-        //   answer:'您是准备从事餐饮行业吗？'
-        // }
       ],
       word:'',
       responseResoult: '',
@@ -158,11 +150,11 @@ export default {
             while ((url = reg.exec(result)) != null) {
               result = result
                 .replace(url,
-                  "< a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
+                  "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
             }//这里的reg就是上面的正则表达式
-            result = result.replace(/\r\n/g, "<br/>");
-            console.log(result.replace(/\r\n/g, "<br/>"))
-            result = result.replace(/\n/g, "<br/>");
+            result = result.replace(/\\r\\n/g, "<br/>");
+            console.log(result.replace(/\\r\\n/g, "<br/>"))
+            result = result.replace(/\\n/g, "<br/>");
 //          this.responseResoult = result
             let data = {
               question: val,
@@ -221,11 +213,11 @@ export default {
           while ((url = reg.exec(result)) != null) {
             result = result
               .replace(url,
-                "< a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
+                "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
           }//这里的reg就是上面的正则表达式
-          result = result.replace(/\r\n/g, '<br/>');
-          console.log(result.replace(/\r\n/g, '<br/>'))
-          result = result.replace(/\n/g, '<br/>');
+          result = result.replace(/\\r\\n/g, '<br/>');
+          console.log(result.replace(/\\r\\n/g, '<br/>'))
+          result = result.replace(/\\n/g, '<br/>');
             let data = {
               question: this.input,
               answer: result

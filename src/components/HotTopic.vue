@@ -12,8 +12,8 @@
           'selected': selectedQuestion === index
         }"
         :key="index"
-        @click="selectedQuestion = index">
-        <h2 @click="emitToB(item.question)">{{ item.question }}</h2>
+        @click="emitToB(item.question,index)">
+        <h2 >{{ item.question }}</h2>
         <p>{{ item.answer }}</p>
       </li>
     </ul>
@@ -26,17 +26,17 @@ export default {
   data () {
     return {
       questionList: [{
-        question: '办理用工备案的范围是哪些？',
-        answer: '招退工管理办法的范围是本市行政...'
+        question: '办理劳务派遣许可证的条件',
+        answer: '经营劳务派遣业务应当具备下列...'
       }, {
-        question: '招工手续办理完毕后，劳动者人事档案应该怎么办？',
-        answer: '招工手续办理完毕后，用人单位应...'
+        question: '数字证书丢失了怎么办',
+        answer: '请携带好有效证件（证件需求参...'
       }, {
-        question: '单位如何办理“法人一证通”数字证书？',
-        answer: '本市用人单位需要在招退工自助经...'
+        question: '怎么查询退工登记备案的结果',
+        answer: '窗口办理退工登记备案的去徐汇...'
       }, {
-        question: '酒类商品批发和酒类商品零售有何区别？',
-        answer: '酒类商品批发指以转售酒类商品为...'
+        question: '临时占用城市道路许可审批结果是什么',
+        answer: '《上海市路政管理行政许可证》哦~ '
       }, {
         question: '营业性演出视听资料内容包括哪些？',
         answer: '歌曲类节目应当提交歌词文本及...'
@@ -48,7 +48,8 @@ export default {
     }
   },
   methods: {
-    emitToB (val) {
+    emitToB (val, index) {
+      this.selectedQuestion = index
       eventBus.$emit('hotTopic', val)
     }
   }
