@@ -136,6 +136,7 @@ export default {
   // },
   mounted() {
     this.getEventDatas()
+
     window.setShi = (word)=>{
       console.log('查看是否替换'+word)
       eventBus.$emit('hotTopic',word)
@@ -178,9 +179,7 @@ export default {
             that.questionList.push(data)
             that.word=''
             // this.responseResoult = ''
-            setTimeout(() => {
-              that.$refs.chatContent.scrollTop = 99999
-            }, 50)
+            that.$refs.chatContent.scrollTop = 99999
           })
       })
     },
@@ -238,16 +237,22 @@ export default {
           }//这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>');
           result = result.replace(/\\n/g, '<br/>');
-          result = result.replace('void0',';')
-          result = result.replace('\\\"','\'')
+          console.log('bofore', { result })
+          result = result.replace(/void0/g,';')
+          result = result.replace(/\\\"\s/g, '"')
+          result = result.replace(/\\\"/g, '"')
+          console.log('after', { result })
             let data = {
               answer: result
             }
             this.questionList.push(data)
             this.word=''
-            setTimeout(() => {
-              this.$refs.chatContent.scrollTop = 99999
-            }, 50)
+
+            this.input = ''
+            // this.responseResoult = ''
+            // setTimeout(() => {
+            this.$refs.chatContent.scrollTop = 99999
+            // }, 50)
         })
       // axios.post('https://can.xmduruo.com:4000/wechatroutine//byWord.do', word)
       //   .then(function (resonse) {
@@ -499,6 +504,8 @@ export default {
   font-size: 14px;/*no*/
   outline: none;
   border: none;
+  height: 39px;/*no*/
+  line-height: 39px;/*no*/
 }
 
 .input-box input::-webkit-input-placeholder {
