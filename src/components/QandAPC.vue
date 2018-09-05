@@ -179,9 +179,7 @@ export default {
             that.questionList.push(data)
             that.word=''
             // this.responseResoult = ''
-            setTimeout(() => {
-              that.$refs.chatContent.scrollTop = 99999
-            }, 50)
+            that.$refs.chatContent.scrollTop = 99999
           })
       })
     },
