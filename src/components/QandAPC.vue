@@ -169,6 +169,8 @@ export default {
             result = result.replace(/\\r\\n/g, "<br/>");
             console.log(result.replace(/\\r\\n/g, "<br/>"))
             result = result.replace(/\\n/g, "<br/>");
+            result = result.replace('void0',';')
+            result = result.replace('\\\"','\'')
 //          this.responseResoult = result
             let data = {
               answer: result
@@ -206,6 +208,9 @@ export default {
     //   $("#newquestion").val(value);
     //   sendQuestion();
     // }
+    sendQuestion(){
+      this.getList()
+    },
     onExpand() {
       this.showHot = !this.showHot
       window.eventBus.$emit('on-showhot', this.showHot)
@@ -233,7 +238,8 @@ export default {
           }//这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>');
           result = result.replace(/\\n/g, '<br/>');
-          result = result.replace("void0",'')
+          result = result.replace('void0',';')
+          result = result.replace('\\\"','\'')
             let data = {
               answer: result
             }
