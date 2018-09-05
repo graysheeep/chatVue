@@ -136,6 +136,7 @@ export default {
   // },
   mounted() {
     this.getEventDatas()
+
     window.setShi = (word)=>{
       console.log('查看是否替换'+word)
       eventBus.$emit('hotTopic',word)
@@ -245,9 +246,12 @@ export default {
             }
             this.questionList.push(data)
             this.word=''
-            setTimeout(() => {
-              this.$refs.chatContent.scrollTop = 99999
-            }, 50)
+
+            this.input = ''
+            // this.responseResoult = ''
+            // setTimeout(() => {
+            this.$refs.chatContent.scrollTop = 99999
+            // }, 50)
         })
       // axios.post('https://can.xmduruo.com:4000/wechatroutine//byWord.do', word)
       //   .then(function (resonse) {
@@ -499,6 +503,8 @@ export default {
   font-size: 14px;/*no*/
   outline: none;
   border: none;
+  height: 39px;/*no*/
+  line-height: 39px;/*no*/
 }
 
 .input-box input::-webkit-input-placeholder {
