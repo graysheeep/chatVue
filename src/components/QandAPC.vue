@@ -237,8 +237,11 @@ export default {
           }//这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>');
           result = result.replace(/\\n/g, '<br/>');
-          result = result.replace('void0',';')
-          result = result.replace('\\\"','\'')
+          console.log('bofore', { result })
+          result = result.replace(/void0/g,';')
+          result = result.replace(/\\\"\s/g, '"')
+          result = result.replace(/\\\"/g, '"')
+          console.log('after', { result })
             let data = {
               answer: result
             }
