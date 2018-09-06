@@ -63,12 +63,11 @@
             <!--<div class="more">更多信息 >></div>-->
           </div>
         </div>
-          <div v-if="temp">
-          <div class="feedback">
-            你对以上问答是否满意？
-            <img :src="hasLiked ? likedIcon : likeIcon" class="like" @click="onLike">
-            <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
-          </div>
+          <div>
+            <feedback
+              v-show="!feedBackList.includes(index)"
+              @on-like="onLike(index)"
+              @on-dislike="onDislike(index)"/>
           </div>
         </div>
         <!--<div class="question-box">-->
@@ -93,8 +92,8 @@
       <span class="count">{{ count }}</span>
     </div>
 
-    <div class="advice" v-show="hasDisliked">
-      <advice-box />
+    <div class="advice" v-show="showAdvice">
+      <advice-box @on-submit="onSubmit" @on-close="onClose"/>
     </div>
   </div>
 </template>
@@ -103,6 +102,7 @@
 <script>
 import eventBus from '../common/eventBus.js'
 import AdviceBox from './AdviceBox'
+import Feedback from './Feedback'
 import global_ from '../common/Global'
 export default {
 
@@ -111,23 +111,25 @@ export default {
       count: 89,
       input: '',
       selectedTab: 0,
-      temp:true,
       // data: {
       // },
       questionList: [
         // {answer:'<a @click="setShi(\'a\')">A:选a</a>'}
       ],
+      feedBackList: [],
       word:'',
       responseResoult: '',
+      dislikeIndex: 0,
       showHot: true,
       hasLiked: false,
-      hasDisliked: false,
+      showAdvice: false,
       likeIcon: require('../assets/like.png'),
       likedIcon: require('../assets/liked.png')
     }
   },
   components: {
-    AdviceBox
+    AdviceBox,
+    Feedback
   },
   // watch:{
   //   query(){
@@ -189,25 +191,26 @@ export default {
       this.$refs.input.value = e.target.value.slice(0, 89)
       this.count = 89 - this.input.length
     },
-    onLike() {
-      this.temp=false
-      this.hasLiked = !this.hasLiked
-      if (this.hasLiked) {
-        this.hasDisliked = false
-      }
+    onLike(index) {
+      console.log(index)
+      this.feedBackList.push(index)
     },
 
-    onDislike() {
-      this.temp=false
-      this.hasDisliked = !this.hasDisliked
-      if (this.hasDisliked) {
-        this.hasLiked = false
-      }
+    onDislike(index) {
+      console.log(index)
+      this.dislikeIndex = index
+      this.showAdvice = true
     },
-    // setShi(value) {
-    //   $("#newquestion").val(value);
-    //   sendQuestion();
-    // }
+
+    onSubmit () {
+      this.showAdvice = false
+      this.feedBackList.push(this.dislikeIndex)
+    },
+
+    onClose () {
+      this.showAdvice = false
+    },
+
     sendQuestion(){
       this.getList()
     },
