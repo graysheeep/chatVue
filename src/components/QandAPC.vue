@@ -165,13 +165,14 @@ export default {
             while ((url = reg.exec(result)) != null) {
               result = result
                 .replace(url,
-                  "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
+                  "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></a>");
             }//这里的reg就是上面的正则表达式
             result = result.replace(/\\r\\n/g, "<br/>");
             console.log(result.replace(/\\r\\n/g, "<br/>"))
             result = result.replace(/\\n/g, "<br/>");
-            result = result.replace('void0',';')
-            result = result.replace('\\\"','\'')
+            result = result.replace(/void0/g,';')
+            result = result.replace(/\\\"\s/g, '"')
+            result = result.replace(/\\\"/g, '"')
 //          this.responseResoult = result
             let data = {
               answer: result
@@ -233,7 +234,7 @@ export default {
           while ((url = reg.exec(result)) != null) {
             result = result
               .replace(url,
-                "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></ a>");
+                "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></a>");
           }//这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>');
           result = result.replace(/\\n/g, '<br/>');

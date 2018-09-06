@@ -38,7 +38,9 @@
             <div class="avatar"></div>
             <div class="answer-content">
               <div class="triangle"></div>
-              {{ item.answer }}
+              <dl v-html="item.answer">
+                {{ item.answer }}
+              </dl>
             </div>
           </div>
           <div class="feedback">
@@ -79,6 +81,7 @@ export default {
       selectedTab: 0,
       questionList: [
       ],
+      word: '',
       hasLiked: false,
       hasDisliked: false,
       likeIcon: require('../assets/like.png'),
@@ -87,6 +90,46 @@ export default {
   },
   components: {
     AdviceMobile
+  },
+  mounted () {
+    window.setShi = (word) => {
+      this.word = word
+      console.log('查看是否替换' + word)
+      this.questionList.push({question: this.word})
+      this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do', {
+        'word': this.word,
+        'sessionId': global_.sessionId
+      }, {emulateJSON: true})
+        .then((res) => {
+          //  把返回值给到
+          var result = res.data.data
+          console.log(res.data.data)
+          var reg = /[a-zA-z]+:\/\/[^\s]*/g
+          var url
+          while ((url = reg.exec(result)) != null) {
+            result = result
+              .replace(url,
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
+          }
+          // 这里的reg就是上面的正则表达式
+          result = result.replace(/\\r\\n/g, '<br/>')
+          console.log(result.replace(/\\r\\n/g, '<br/>'))
+          result = result.replace(/\\n/g, '<br/>')
+          result = result.replace(/void0/g, ';')
+          result = result.replace(/\\"\s/g, '"')
+          result = result.replace(/\\"/g, '"')
+          let data = {
+            answer: result
+          }
+          this.questionList.push(data)
+          this.word = ''
+          this.input = ''
+          // this.responseResoult = ''
+          setTimeout(() => {
+            this.$refs.chatContent.scrollTop = 99999
+          }, 50)
+        })
+    }
   },
   methods: {
     onChangeInput (e) {
@@ -122,9 +165,11 @@ export default {
       if (this.input.length === 0) {
         return false
       }
-      this.questionList.push({question: this.input})
+      this.word = this.input
+      this.input = ''
+      this.questionList.push({question: this.word})
       this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do', {
-        'word': this.input,
+        'word': this.word,
         'sessionId': global_.sessionId
       }, {emulateJSON: true})
         .then((res) => {
@@ -136,12 +181,15 @@ export default {
           while ((url = reg.exec(result)) != null) {
             result = result
               .replace(url,
-                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></ a>")
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
           }
           // 这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>')
           console.log(result.replace(/\\r\\n/g, '<br/>'))
           result = result.replace(/\\n/g, '<br/>')
+          result = result.replace(/void0/g, ';')
+          result = result.replace(/\\"\s/g, '"')
+          result = result.replace(/\\"/g, '"')
           let data = {
             answer: result
           }
