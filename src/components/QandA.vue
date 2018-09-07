@@ -104,12 +104,28 @@ export default {
           //  把返回值给到
           var result = res.data.data
           console.log(res.data.data)
-          var reg = /[a-zA-z]+:\/\/[^\s]*/g
+          var reg = /[a-zA-z]+:\/\/[^\s]*.pdf/g
+          var reg1 = /[a-zA-z]+:\/\/[^\s]*/g
           var url
+          // 替换pdf预览
           while ((url = reg.exec(result)) != null) {
+            console.log('222' + url)
             result = result
               .replace(url,
-                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>");
+          }
+
+          var reg3 = /[\u4e00-\u9fa5]{1}/g
+          var url2
+          while ((url2 = reg1.exec(result)) != null) {
+            if (reg3.exec(url2) != null) {
+              console.log('223' + url2)
+            } else {
+              console.log('123' + url2)
+              result = result
+                .replace(url2,
+                  "<a href='" + url2 + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
+            }
           }
           // 这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>')
@@ -176,12 +192,28 @@ export default {
           //  把返回值给到
           var result = res.data.data
           console.log(res.data.data)
-          var reg = /[a-zA-z]+:\/\/[^\s]*/g
+          var reg = /[a-zA-z]+:\/\/[^\s]*.pdf/g
+          var reg1 = /[a-zA-z]+:\/\/[^\s]*/g
           var url
+          // 替换pdf预览
           while ((url = reg.exec(result)) != null) {
+            console.log('222' + url)
             result = result
               .replace(url,
-                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>");
+          }
+
+          var reg3 = /[\u4e00-\u9fa5]{1}/g
+          var url2
+          while ((url2 = reg1.exec(result)) != null) {
+            if (reg3.exec(url2) != null) {
+              console.log('223' + url2)
+            } else {
+              console.log('123' + url2)
+              result = result
+                .replace(url2,
+                  "<a href='" + url2 + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
+            }
           }
           // 这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>')
@@ -346,7 +378,7 @@ export default {
 
 .answer-content h1 {
   color: #252526;
-  font-size: 14px;/*no*/
+  font-size: 16px;/*no*/
 }
 
 .answer-content h1 span {
@@ -355,19 +387,19 @@ export default {
 
 .answer-content h2 {
   color: #252526;
-  font-size: 14px;/*no*/
+  font-size: 16px;/*no*/
   margin-top: 21px;
 }
 
 .answer-content li {
   margin: 9px 0;
-  font-size: 14px;/*no*/
+  font-size: 16px;/*no*/
   line-height: 20px;/*no*/
   color: #252526;
 }
 
 .answer-content .tag {
-  font-size: 11px;/*no*/
+  font-size: 14px;/*no*/
   line-height: 20px;/*no*/
   display: inline-block;
   padding: 0 8px;

@@ -154,7 +154,7 @@ export default {
         that.word = val
         console.log(val)
         that.questionList.push({question:that.word})
-        that.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{
+        that.$http.post('https://can.xmduruo.com:4000/wechatroutine/webWord.do',{
           'word':val,
           'sessionId':global_.sessionId
         },{emulateJSON:true})
@@ -162,13 +162,30 @@ export default {
             //  把返回值给到
             var result=res.data.data
             console.log(res.data.data)
-            var reg = /[a-zA-z]+:\/\/[^\s]*/g;
+            // var reg = /[a-zA-z]+:\/\/[^\s]*/g;
+            var reg = /[a-zA-z]+:\/\/[^\s]*.pdf/g;
+            var reg1 = /[a-zA-z]+:\/\/[^\s]*/g;
             var url;
-            while ((url = reg.exec(result)) != null) {
+            //替换pdf预览
+            while ((url = reg.exec(result))!=null) {
+              console.log("222"+url)
               result = result
                 .replace(url,
                   "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></a>");
-            }//这里的reg就是上面的正则表达式
+            }
+
+            var  reg3 =/[\u4e00-\u9fa5]{1}/g
+            var url2
+            while((url2 = reg1.exec(result))!=null) {
+              if(reg3.exec(url2)!=null){
+                console.log("223"+url2)
+              }else {
+                console.log("123"+url2)
+                result = result
+                  .replace(url2,
+                    "<a href='"+url2+"' target='_blank'><font color='blue'>请点这里哦~</font></a>");
+              }
+            }
             result = result.replace(/\\r\\n/g, "<br/>");
             console.log(result.replace(/\\r\\n/g, "<br/>"))
             result = result.replace(/\\n/g, "<br/>");
@@ -225,20 +242,39 @@ export default {
       this.questionList.push({question:this.input})
       this.word=this.input
       this.input = ''
-      this.$http.post('https://can.xmduruo.com:4000/wechatroutine//webWord.do',{
+      this.$http.post('https://can.xmduruo.com:4000/wechatroutine/webWord.do',{
         'word':this.word,
         'sessionId':global_.sessionId
       },{emulateJSON:true})
         .then((res) => {
           //  把返回值给到
           var result=res.data.data
-          var reg = /[a-zA-z]+:\/\/[^\s]*/g;
+          // var reg = /[a-zA-z]+:\/\/[^\s]*/g;
+          var reg = /[a-zA-z]+:\/\/[^\s]*.pdf/g;
+          var reg1 = /[a-zA-z]+:\/\/[^\s]*/g;
           var url;
-          while ((url = reg.exec(result)) != null) {
+          //替换pdf预览
+          while ((url = reg.exec(result))!=null) {
+            console.log("222"+url)
             result = result
               .replace(url,
                 "<a href='"+url+"' target='_blank'><font color='blue'>请点这里哦~</font></a>");
-          }//这里的reg就是上面的正则表达式
+          }
+
+          var  reg3 =/[\u4e00-\u9fa5]{1}/g
+          var url2
+          while((url2 = reg1.exec(result))!=null) {
+            if(reg3.exec(url2)!=null){
+                console.log("223"+url2)
+              }else {
+                console.log("123"+url2)
+                result = result
+                  .replace(url2,
+                    "<a href='"+url2+"' target='_blank'><font color='blue'>请点这里哦~</font></a>");
+              }
+          }
+          // 替换网址
+          //这里的reg就是上面的正则表达式
           result = result.replace(/\\r\\n/g, '<br/>');
           result = result.replace(/\\n/g, '<br/>');
           console.log('bofore', { result })
@@ -387,7 +423,7 @@ export default {
   background-color: #41BF76;
   padding: 19px;/*no*/
   color: #fff;
-  font-size: 14px;/*no*/
+  font-size: 15px;/*no*/
   border-radius: 10px;/*no*/
 }
 
@@ -430,7 +466,7 @@ export default {
 
 .answer-content h1 {
   color: #252526;
-  font-size: 12px;/*no*/
+  font-size: 20px;/*no*/
 }
 
 .answer-content h1 span {
@@ -439,20 +475,20 @@ export default {
 
 .answer-content h2 {
   color: #252526;
-  font-size: 12px;/*no*/
+  font-size: 18px;/*no*/
   margin-top: 21px;
 }
 
 .answer-content li {
   margin: 8px 0;/*no*/
-  font-size: 12px;/*no*/
+  font-size: 18px;/*no*/
   line-height: 20px;/*no*/
   color: #252526;
 }
 
 .answer-content .tag {
-  font-size: 11px;/*no*/
-  line-height: 20px;/*no*/
+  font-size: 18px;/*no*/
+  line-height: 15px;/*no*/
   display: inline-block;
   padding: 0 8px;
   border-radius: 3px;
