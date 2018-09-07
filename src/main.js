@@ -5,8 +5,7 @@ import VueResource from 'vue-resource'
 import PCApp from './PCApp'
 import App from './App'
 import router from './router'
-
-const isMobile = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
+import device from 'current-device'
 
 Vue.use(VueResource)
 Vue.config.productionTip = false
@@ -17,5 +16,5 @@ new Vue({
   el: '#app',
   router,
   components: { App, PCApp },
-  template: isMobile ? '<App/>' : '<PCApp/>'
+  template: device.mobile() ? '<App/>' : '<PCApp/>'
 })

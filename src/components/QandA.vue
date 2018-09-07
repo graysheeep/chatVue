@@ -112,7 +112,7 @@ export default {
             console.log('222' + url)
             result = result
               .replace(url,
-                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>");
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
           }
 
           var reg3 = /[\u4e00-\u9fa5]{1}/g
@@ -200,7 +200,7 @@ export default {
             console.log('222' + url)
             result = result
               .replace(url,
-                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>");
+                "<a href='" + url + "' target='_blank'><font color='blue'>请点这里哦~</font></a>")
           }
 
           var reg3 = /[\u4e00-\u9fa5]{1}/g
