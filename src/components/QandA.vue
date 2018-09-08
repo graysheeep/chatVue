@@ -442,6 +442,7 @@ export default {
   bottom: 15px;
   left: 12px;
   right: 12px;
+  z-index: 999;
   /*height: 58px;*/
   border-radius: 99px;
   background-color: #fff;
