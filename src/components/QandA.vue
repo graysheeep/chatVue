@@ -54,7 +54,9 @@
         </div>
     </div>
 
-    <div class="input-box" @click="onClickInput" ref="inputBox">
+  </div>
+
+  <div class="input-box" @click="onClickInput" ref="inputBox">
       <input
         type="text"
         placeholder="简单输入，我来为你解答…"
@@ -66,7 +68,6 @@
       <div class="send" @click="sendQuestion"></div>
       <span class="count">{{ count }}</span>
     </div>
-  </div>
   </div>
 </template>
 
@@ -442,7 +443,7 @@ export default {
   bottom: 15px;
   left: 12px;
   right: 12px;
-  z-index: 999;
+  z-index: 99999;
   /*height: 58px;*/
   border-radius: 99px;
   background-color: #fff;

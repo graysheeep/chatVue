@@ -11,6 +11,8 @@ Vue.use(VueResource)
 Vue.config.productionTip = false
 window.eventBus = new Vue()
 
+console.log(device.mobile())
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
