@@ -1,6 +1,6 @@
 <template>
-  <div class="container" v-show="!hasSubmit">
-    <img src="../assets/close.png" alt="" class="close" @click="hasSubmit = true">
+  <div class="container">
+    <img src="../assets/close.png" alt="" class="close" @click="onClose">
 
     <h2>意见反馈</h2>
 
@@ -11,10 +11,16 @@
         'selected': selectedAdvice === index
       }"
       :key="index"
-      @click="selectedAdvice = index">{{ item }}</div>
+      @click="onSelectAdvice(item, index)">{{ item }}</div>
 
     <div class="input-advice">
-      <textarea type="text" class="advice-input" row="10" placeholder="请输入您的建议" style="resize:none;"></textarea>
+      <textarea
+        type="text"
+        class="advice-input"
+        row="10"
+        placeholder="请输入您的建议"
+        style="resize:none;"
+        v-model="content"></textarea>
     </div>
 
     <div class="submit">
@@ -31,14 +37,29 @@ export default {
     return {
       adviceList: ['和过去或最新政策不一样', '答案模糊、不清楚', '没有正面回答问题'],
       selectedAdvice: -1,
-      hasSubmit: false
+      content: ''
     }
   },
 
   methods: {
     onSubmit () {
+      if (!this.content.length) {
+        alert('请输入意见')
+        return false
+      }
       alert('意见已提交')
-      this.hasSubmit = true
+      this.selectedAdvice = -1
+      this.content = ''
+      this.$emit('on-submit')
+    },
+
+    onSelectAdvice (item, index) {
+      this.selectedAdvice = index
+      this.content = item
+    },
+
+    onClose () {
+      this.$emit('on-close')
     }
   }
 }

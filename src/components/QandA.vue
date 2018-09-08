@@ -43,20 +43,23 @@
               </dl>
             </div>
           </div>
-          <div class="feedback">
+          <!-- <div class="feedback">
             你对以上问答是否满意？
             <img :src="hasLiked ? likedIcon : likeIcon" class="like" @click="onLike">
             <img :src="hasDisliked ? likedIcon : likeIcon" class="dislike" @click="onDislike">
+          </div> -->
+          <div>
+            <feedback-mobile
+              v-show="!feedBackList.includes(index)"
+              @on-like="onLike(index)"
+              @on-dislike="onDislike(index)"/>
           </div>
-        </div>
-        <div class="advice" v-show="hasDisliked">
-          <advice-mobile />
         </div>
     </div>
 
   </div>
 
-  <div class="input-box" @click="onClickInput" ref="inputBox">
+    <div class="input-box" @click="onClickInput" ref="inputBox">
       <input
         type="text"
         placeholder="简单输入，我来为你解答…"
@@ -68,12 +71,18 @@
       <div class="send" @click="sendQuestion"></div>
       <span class="count">{{ count }}</span>
     </div>
+
+    <div class="advice" v-show="showAdvice">
+      <advice-mobile @on-submit="onSubmit" @on-close="onClose"/>
+    </div>
   </div>
 </template>
 
 <script>
 import AdviceMobile from './AdviceMobile'
+import FeedbackMobile from './FeedbackMobile'
 import global_ from '../common/Global'
+
 export default {
   data () {
     return {
@@ -82,7 +91,9 @@ export default {
       selectedTab: 0,
       questionList: [
       ],
+      feedBackList: [],
       word: '',
+      showAdvice: false,
       hasLiked: false,
       hasDisliked: false,
       likeIcon: require('../assets/like.png'),
@@ -90,7 +101,8 @@ export default {
     }
   },
   components: {
-    AdviceMobile
+    AdviceMobile,
+    FeedbackMobile
   },
   mounted () {
     window.setShi = (word) => {
@@ -165,19 +177,26 @@ export default {
       }, 300)
     },
 
-    onLike () {
-      this.hasLiked = !this.hasLiked
-      if (this.hasLiked) {
-        this.hasDisliked = false
-      }
+    onLike (index) {
+      console.log(index)
+      this.feedBackList.push(index)
     },
 
-    onDislike () {
-      this.hasDisliked = !this.hasDisliked
-      if (this.hasDisliked) {
-        this.hasLiked = false
-      }
+    onDislike (index) {
+      console.log(index)
+      this.dislikeIndex = index
+      this.showAdvice = true
     },
+
+    onSubmit () {
+      this.showAdvice = false
+      this.feedBackList.push(this.dislikeIndex)
+    },
+
+    onClose () {
+      this.showAdvice = false
+    },
+
     getList: function () {
       if (this.input.length === 0) {
         return false
