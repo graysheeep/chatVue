@@ -63,9 +63,9 @@
       <input
         type="text"
         placeholder="简单输入，我来为你解答…"
-        :value="input"
-        @input="onChangeInput"
+        v-model="input"
         ref="input"
+        maxlength="89"
         @keyup.enter="sendQuestion">
 
       <div class="send" @click="sendQuestion"></div>
@@ -86,7 +86,6 @@ import global_ from '../common/Global'
 export default {
   data () {
     return {
-      count: 89,
       input: '',
       selectedTab: 0,
       questionList: [
@@ -98,6 +97,11 @@ export default {
       hasDisliked: false,
       likeIcon: require('../assets/like.png'),
       likedIcon: require('../assets/liked.png')
+    }
+  },
+  computed: {
+    count () {
+      return 89 - this.input.length
     }
   },
   components: {
@@ -357,6 +361,9 @@ export default {
   color: #fff;
   font-size: 14px;/*no*/
   border-radius: 10px;
+  max-width: 80%;
+  overflow: hidden;
+  word-break: break-all;
 }
 
 .answer {
