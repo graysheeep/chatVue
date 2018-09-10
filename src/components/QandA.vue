@@ -59,7 +59,7 @@
 
   </div>
 
-    <div class="input-box" @click="onClickInput" ref="inputBox">
+    <form class="input-box" @click="onClickInput" ref="inputBox" action="">
       <input
         type="text"
         placeholder="简单输入，我来为你解答…"
@@ -70,7 +70,7 @@
 
       <div class="send" @click="sendQuestion"></div>
       <span class="count">{{ count }}</span>
-    </div>
+    </form>
 
     <div class="advice" v-show="showAdvice">
       <advice-mobile @on-submit="onSubmit" @on-close="onClose"/>
@@ -163,6 +163,17 @@ export default {
           }, 50)
         })
     }
+
+    if (/Android/gi.test(navigator.userAgent)) {
+      window.addEventListener('resize', function () {
+        if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+          window.setTimeout(function () {
+            document.activeElement.scrollIntoViewIfNeeded()
+            document.activeElement.scrollIntoView()
+          }, 0)
+        }
+      })
+    }
   },
   methods: {
     onChangeInput (e) {
@@ -176,9 +187,9 @@ export default {
     },
 
     onClickInput () {
-      setTimeout(() => {
-        this.$refs.inputBox.scrollIntoViewIfNeeded()
-      }, 300)
+      // setTimeout(() => {
+      //   this.$refs.inputBox.scrollIntoViewIfNeeded()
+      // }, 300)
     },
 
     onLike (index) {
